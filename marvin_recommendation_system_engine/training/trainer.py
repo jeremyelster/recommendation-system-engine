@@ -23,12 +23,23 @@ class Trainer(EngineBaseTraining):
         super(Trainer, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        """
-        Setup the model with the result of the algorithm used to training.
-        Use the self.dataset prepared in the last action as source of data.
+        from surprise.model_selection import GridSearchCV
+        from surprise import SVD
+        from surprise import KNNWithMeans
 
-        Eg.
+        algo = params["algo"](sim_options=params["sim_options"])
+        algo.fit(self.marvin_dataset["trainset"])
 
-            self.marvin_model = {...}
-        """
-        self.marvin_model = {}
+
+        # Get the predictions for null values in the set
+        if params["prediction"]["pred_type"] == "top_n":
+            predictions = algo.test(self.marvin_dataset["testset"])
+        else:
+            predictions = "To generate predictions, set prediction pred_type to top_n"
+
+        self.marvin_model = {
+            #"grid_search": gs,
+            "model": algo,
+            "predictions": predictions
+        }
+

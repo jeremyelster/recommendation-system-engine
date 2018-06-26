@@ -23,12 +23,15 @@ class MetricsEvaluator(EngineBaseTraining):
         super(MetricsEvaluator, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        """
-        Setup the metrics with the result of the algorithms used to test the model.
-        Use the self.dataset and self.model prepared in the last actions.
+        import pandas as pd
+        df_results = pd.DataFrame.from_dict(self.marvin_model["grid_search"].cv_results)
 
-        Eg.
+        # combination of parameters that gave the best RMSE score
+        print("Best Model: {}".format([key + ": " + str(value) for (key, value) in marvin_model["grid_search"].best_params['rmse'].items()]))
 
-            self.marvin_metrics = {...}
-        """
-        self.marvin_metrics = {}
+        # best RMSE score
+        print("Best RMSE: {}".format(marvin_model["grid_search"].best_score['rmse']))
+
+
+        df_results[['params', 'mean_test_mae', 'mean_test_rmse', 'mean_test_time']].sort_values('mean_test_rmse')
+

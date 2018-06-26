@@ -23,11 +23,12 @@ class AcquisitorAndCleaner(EngineBaseDataHandler):
         super(AcquisitorAndCleaner, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        """
-        Setup the initial_dataset with all cleaned data necessary to build your dataset in the next action.
+        from surprise import Dataset
 
-        Eg.
+        # Load the movielens-100k dataset (download it if needed),
+        data = Dataset.load_builtin('ml-100k')
 
-            self.marvin_initial_dataset = {...}
-        """
-        self.marvin_initial_dataset = {}
+        self.marvin_initial_dataset = {
+            "data": data
+        }
+
