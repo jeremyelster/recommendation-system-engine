@@ -23,8 +23,8 @@ class Predictor(EngineBasePrediction):
         super(Predictor, self).__init__(**kwargs)
 
     def execute(self, input_message, params, **kwargs):
-        """
-        Return the predicted value in a json parsable object format.
-        Use the self.model and self.metrics objects if necessary.
-        """
-        return {"predicted_value": "mocked_return"}
+        # get a prediction for specific users and items.
+        pred = self.marvin_model["model"].predict(
+            str(input_message["User_id"]), str(input_message["Item_id"]), r_ui=4, verbose=True)
+
+        return final_prediction

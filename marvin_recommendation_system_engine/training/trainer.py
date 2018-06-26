@@ -25,9 +25,20 @@ class Trainer(EngineBaseTraining):
     def execute(self, params, **kwargs):
         from surprise.model_selection import GridSearchCV
         from surprise import SVD
-        from surprise import KNNWithMeans
+        from surprise import KNNBaseline
 
-        algo = params["algo"](sim_options=params["sim_options"])
+        algo_dict = {"SVD": SVD, "KNNBaseline": KNNBaseline}
+
+        gs = GridSearchCV(
+            algo_dict[params["algo"]],
+            params["param_grid"],
+            measures=params["measures"],
+            cv=params["n_cv"])
+
+        gs.fit(self.marvin_dataset["data"])
+
+        # We can now use the algorithm that yields the best rmse:
+        algo = gs.best_estimator['rmse']
         algo.fit(self.marvin_dataset["trainset"])
 
 
@@ -38,7 +49,7 @@ class Trainer(EngineBaseTraining):
             predictions = "To generate predictions, set prediction pred_type to top_n"
 
         self.marvin_model = {
-            #"grid_search": gs,
+            "grid_search": gs,
             "model": algo,
             "predictions": predictions
         }
