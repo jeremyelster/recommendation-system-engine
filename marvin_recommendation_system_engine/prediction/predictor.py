@@ -24,7 +24,13 @@ class Predictor(EngineBasePrediction):
 
     def execute(self, input_message, params, **kwargs):
         # get a prediction for specific users and items.
-        pred = self.marvin_model["model"].predict(
-            str(input_message["User_id"]), str(input_message["Item_id"]), r_ui=4, verbose=True)
+        pred_dict = {}
+
+        for algo in params["algo"]:
+            pred_dict[algo["name"]] = self.marvin_model[algo["name"]]["model"].predict(
+                str(input_message["User_id"]), str(input_message["Item_id"]), r_ui=4, verbose=True)
+
+
+        final_prediction = pred_dict
 
         return final_prediction

@@ -24,14 +24,20 @@ class MetricsEvaluator(EngineBaseTraining):
 
     def execute(self, params, **kwargs):
         import pandas as pd
-        df_results = pd.DataFrame.from_dict(self.marvin_model["grid_search"].cv_results)
+        from surprise import accuracy
 
-        # combination of parameters that gave the best RMSE score
-        print("Best Model: {}".format([key + ": " + str(value) for (key, value) in marvin_model["grid_search"].best_params['rmse'].items()]))
+        for algo in params["algo"]:
+            print(algo)
+            # combination of parameters that gave the best RMSE score
+            print("Best Model: {}".format([key + ": " + str(value) for (key, value) in self.marvin_model[algo["name"]]["grid_search"].best_params['rmse'].items()]))
 
-        # best RMSE score
-        print("Best RMSE: {}".format(marvin_model["grid_search"].best_score['rmse']))
+            # best RMSE score
+            print("Best RMSE: {}".format(self.marvin_model[algo["name"]]["grid_search"].best_score['rmse']))
 
+            # Prediction Score
+            # Train the algorithm on the trainset, and predict ratings for the testset
+            predictions = self.marvin_model[algo["name"]]["model"].test(self.marvin_dataset["testset"])
 
-        df_results[['params', 'mean_test_mae', 'mean_test_rmse', 'mean_test_time']].sort_values('mean_test_rmse')
+            # Then compute RMSE
+            print("Test Set Score: {}".format(accuracy.rmse(predictions)))
 

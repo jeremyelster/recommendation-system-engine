@@ -28,7 +28,7 @@ class TrainingPreparator(EngineBaseDataHandler):
         testset = trainset.build_anti_testset()
         print(testset[0])
         self.marvin_dataset = {
-            #"data": self.marvin_initial_dataset["data"],
+            "data": self.marvin_initial_dataset["data"],
             "trainset": trainset,
             "testset": testset
         }

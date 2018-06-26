@@ -29,28 +29,32 @@ class Trainer(EngineBaseTraining):
 
         algo_dict = {"SVD": SVD, "KNNBaseline": KNNBaseline}
 
-        gs = GridSearchCV(
-            algo_dict[params["algo"]],
-            params["param_grid"],
-            measures=params["measures"],
-            cv=params["n_cv"])
+        model_dict = {}
 
-        gs.fit(self.marvin_dataset["data"])
+        for algo in params["algo"]:
 
-        # We can now use the algorithm that yields the best rmse:
-        algo = gs.best_estimator['rmse']
-        algo.fit(self.marvin_dataset["trainset"])
+            print(algo)
 
+            # Get Name and Initiate Algorithm
+            algo_name = algo["name"]
+            model_dict[algo_name] = {}
 
-        # Get the predictions for null values in the set
-        if params["prediction"]["pred_type"] == "top_n":
-            predictions = algo.test(self.marvin_dataset["testset"])
-        else:
-            predictions = "To generate predictions, set prediction pred_type to top_n"
+            # Initialize Gridsearch
+            gs = GridSearchCV(
+                algo_dict[algo_name],
+                algo["param_grid"],
+                measures=params["measures"],
+                cv=params["n_cv"])
 
-        self.marvin_model = {
-            "grid_search": gs,
-            "model": algo,
-            "predictions": predictions
-        }
+            gs.fit(self.marvin_dataset["data"])
+
+            # We can now use the algorithm that yields the best rmse:
+            best_algo = gs.best_estimator['rmse']
+            best_algo.fit(self.marvin_dataset["trainset"])
+
+            # Get the predictions for null values in the set
+            model_dict[algo_name]["grid_search"] = gs
+            model_dict[algo_name]["model"] = best_algo
+
+        self.marvin_model = model_dict
 

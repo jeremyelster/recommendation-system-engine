@@ -4,7 +4,29 @@
         "lr_all": [0.005],
         "reg_all": [0.6]  
     },
-    "algo": "SVD",
+    "algo": [
+        {
+            "name": "SVD",
+            "param_grid": {
+                "n_epochs": [10], 
+                "lr_all": [0.005],
+                "reg_all": [0.6]   
+            }
+        },
+        {
+            "name": "KNNBaseline",
+            "param_grid": {
+                "k": [40],
+                "sim_options": {
+                    "name": ["msd", "cosine"],
+                    "min_support": [5],
+                    "user_based": ["False"]
+                }
+            }
+        }
+            
+            
+    ],
     "measures": ["rmse", "mae"],
     "n_cv": 3,
     
