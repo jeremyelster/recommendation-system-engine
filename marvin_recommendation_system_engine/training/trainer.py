@@ -26,8 +26,12 @@ class Trainer(EngineBaseTraining):
         from surprise.model_selection import GridSearchCV
         from surprise import SVD
         from surprise import KNNBaseline
+        from surprise import KNNBasic
+        from surprise import BaselineOnly
+        from surprise import KNNWithMeans
 
-        algo_dict = {"SVD": SVD, "KNNBaseline": KNNBaseline}
+
+        algo_dict = {"SVD": SVD, "KNNBaseline": KNNBaseline, "KNNBasic": KNNBasic, "BaselineOnly": BaselineOnly, "KNNWithMeans": KNNWithMeans}
 
         model_dict = {}
 
@@ -37,7 +41,13 @@ class Trainer(EngineBaseTraining):
 
             # Get Name and Initiate Algorithm
             algo_name = algo["name"]
-            model_dict[algo_name] = {}
+
+            if algo.get("full_name", False):
+                full_name = algo["full_name"]
+            else:
+                full_name = algo_name
+
+            model_dict[full_name] = {}
 
             # Initialize Gridsearch
             gs = GridSearchCV(
@@ -53,8 +63,8 @@ class Trainer(EngineBaseTraining):
             best_algo.fit(self.marvin_dataset["trainset"])
 
             # Get the predictions for null values in the set
-            model_dict[algo_name]["grid_search"] = gs
-            model_dict[algo_name]["model"] = best_algo
+            model_dict[full_name]["grid_search"] = gs
+            model_dict[full_name]["model"] = best_algo
 
         self.marvin_model = model_dict
 

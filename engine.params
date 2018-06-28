@@ -1,9 +1,4 @@
 {
-    "param_grid": {
-        "n_epochs": [20], 
-        "lr_all": [0.005],
-        "reg_all": [0.6]  
-    },
     "algo": [
         {
             "name": "SVD",
@@ -14,18 +9,30 @@
             }
         },
         {
-            "name": "KNNBaseline",
+            "name": "BaselineOnly",
             "param_grid": {
-                "k": [40],
-                "sim_options": {
-                    "name": ["msd", "cosine"],
-                    "min_support": [5],
-                    "user_based": ["False"]
+                "bsl_options": {
+                    "method": ["sgd"],
+                    "learning_rate": [0.00005]
                 }
-            }
-        }
-            
-            
+
+            },
+            "full_name": "BaselineOnlySGD"
+
+        },
+        {
+            "name": "BaselineOnly",
+            "param_grid": {
+                "bsl_options": {
+                    "method": ["als"],
+                    "n_epochs": [5],
+                    "reg_u": [12],
+                    "reg_i": [5]
+               }
+
+            },
+            "full_name": "BaselineOnlyALS"
+        }            
     ],
     "measures": ["rmse", "mae"],
     "n_cv": 3,

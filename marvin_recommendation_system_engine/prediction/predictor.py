@@ -27,8 +27,17 @@ class Predictor(EngineBasePrediction):
         pred_dict = {}
 
         for algo in params["algo"]:
-            pred_dict[algo["name"]] = self.marvin_model[algo["name"]]["model"].predict(
-                str(input_message["User_id"]), str(input_message["Item_id"]), r_ui=4, verbose=True)
+
+            # Get Name and Initiate Algorithm
+            algo_name = algo["name"]
+
+            if algo.get("full_name", False):
+                full_name = algo["full_name"]
+            else:
+                full_name = algo_name
+
+            pred_dict[full_name] = self.marvin_model[full_name]["model"].predict(
+                str(input_message["User_id"]), str(input_message["Item_id"]), r_ui=4, verbose=False)[3]
 
 
         final_prediction = pred_dict
