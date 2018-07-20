@@ -10,8 +10,32 @@ except ImportError:
 from marvin_recommendation_system_engine.prediction import Predictor
 
 
-class TestPredictor:
-    def test_execute(self, mocked_params):
-        ac = Predictor()
-        ac.execute(input_message="fake message", params=mocked_params)
-        assert not ac._params
+def test_execute(mocked_params):
+
+    mocked_input = {
+        "User_id": 196,
+        "Item_id": 302
+    }
+
+    mocked_params = {
+        "algo": [
+            {
+                "name": "SVD",
+                "param_grid": {
+                    "n_epochs": [10],
+                    "lr_all": [0.005],
+                    "reg_all": [0.6]
+                }
+            }]}
+
+    mocked_model = {
+        "SVD": {
+            "model": mock.MagicMock()
+        }
+    }
+
+    ac = Predictor(model=mocked_model)
+    ac.execute(input_message=mocked_input, params=mocked_params)
+    mocked_model['SVD']['model'].predict.assert_called_once()
+
+    # Get Name

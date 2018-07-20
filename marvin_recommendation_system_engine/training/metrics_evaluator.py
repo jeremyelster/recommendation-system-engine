@@ -10,6 +10,8 @@ from .._compatibility import six
 from .._logging import get_logger
 
 from marvin_python_toolbox.engine_base import EngineBaseTraining
+import pandas as pd
+from surprise import accuracy
 
 __all__ = ['MetricsEvaluator']
 
@@ -23,9 +25,6 @@ class MetricsEvaluator(EngineBaseTraining):
         super(MetricsEvaluator, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        import pandas as pd
-        from surprise import accuracy
-
         metrics_dict = {}
 
         for algo in params["algo"]:

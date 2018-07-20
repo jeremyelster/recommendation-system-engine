@@ -8,10 +8,15 @@ except ImportError:
     import unittest.mock as mock
 
 from marvin_recommendation_system_engine.data_handler import TrainingPreparator
+from surprise import Dataset
+
+#@mock.patch('marvin_recommendation_system_engine.data_handler.training_preparator.surprise.Dataset')
+def test_execute(mocked_params):
+
+    test_dataset = {}
+    test_dataset["data"] = mock.MagicMock()
+
+    ac = TrainingPreparator(initial_dataset=test_dataset)
+    ac.execute(params=mocked_params)
 
 
-class TestTrainingPreparator:
-    def test_execute(self, mocked_params):
-        ac = TrainingPreparator()
-        ac.execute(params=mocked_params)
-        assert not ac._params

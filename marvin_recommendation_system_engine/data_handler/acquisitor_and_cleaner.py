@@ -10,6 +10,7 @@ from .._compatibility import six
 from .._logging import get_logger
 
 from marvin_python_toolbox.engine_base import EngineBaseDataHandler
+from surprise import Dataset
 
 __all__ = ['AcquisitorAndCleaner']
 
@@ -23,8 +24,6 @@ class AcquisitorAndCleaner(EngineBaseDataHandler):
         super(AcquisitorAndCleaner, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        from surprise import Dataset
-
         # Load the movielens-100k dataset (download it if needed),
         data = Dataset.load_builtin('ml-100k')
 

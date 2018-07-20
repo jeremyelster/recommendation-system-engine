@@ -10,6 +10,7 @@ from .._compatibility import six
 from .._logging import get_logger
 
 from marvin_python_toolbox.engine_base import EngineBaseDataHandler
+from surprise import Dataset
 
 __all__ = ['TrainingPreparator']
 

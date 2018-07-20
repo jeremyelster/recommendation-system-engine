@@ -10,6 +10,13 @@ from .._compatibility import six
 from .._logging import get_logger
 
 from marvin_python_toolbox.engine_base import EngineBaseTraining
+from surprise.model_selection import GridSearchCV
+from surprise import SVD
+from surprise import KNNBaseline
+from surprise import KNNBasic
+from surprise import BaselineOnly
+from surprise import KNNWithMeans
+
 
 __all__ = ['Trainer']
 
@@ -23,14 +30,6 @@ class Trainer(EngineBaseTraining):
         super(Trainer, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        from surprise.model_selection import GridSearchCV
-        from surprise import SVD
-        from surprise import KNNBaseline
-        from surprise import KNNBasic
-        from surprise import BaselineOnly
-        from surprise import KNNWithMeans
-
-
         algo_dict = {"SVD": SVD, "KNNBaseline": KNNBaseline, "KNNBasic": KNNBasic, "BaselineOnly": BaselineOnly, "KNNWithMeans": KNNWithMeans}
 
         model_dict = {}
